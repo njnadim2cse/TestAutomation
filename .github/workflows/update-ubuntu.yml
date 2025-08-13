@@ -14,10 +14,10 @@ jobs:
 
       - name: Setup SSH
         run: |
-          mkdir -p /home/nadim-hossain/.ssh
-          echo "${{ secrets.TARGET_SSH_KEY }}" > /home/nadim-hossain/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 103.145.138.209 >> /home/nadim-hossain/.ssh/known_hosts
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.TARGET_SSH_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          ssh-keyscan -H 103.145.138.209 >> $HOME/.ssh/known_hosts
 
       - name: Pull latest changes on Ubuntu machine
         run: |
