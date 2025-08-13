@@ -8,22 +8,25 @@ on:
 jobs:
   update-remote:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
+        
+      - name: Show current user and home directory
+        run: |
+          whoami
+          echo "Home directory: $HOME"
+          ls -ld $HOME
+          
       - name: Setup SSH
         run: |
           mkdir -p $HOME/.ssh
           chmod 700 $HOME/.ssh
-
-          ${{ secrets.TARGET_SSH_KEY }} > $HOME/.ssh/id_rsa
+          echo "${{ secrets.TARGET_SSH_KEY }}" > $HOME/.ssh/id_rsa
           chmod 600 $HOME/.ssh/id_rsa
-
           ssh-keyscan -H 103.145.138.209 >> $HOME/.ssh/known_hosts
-
+          
       - name: Pull latest changes on Ubuntu machine
         run: |
           ssh -o StrictHostKeyChecking=no nadim-hossain@103.145.138.209 \
-          "cd /home/nadim-hossain/Downloads/TestAutomation-main && git pull"
+          "cd /home/nadim-hossain/Downloads/TestAutomation-main && git pull || git reset --hard origin/main"
