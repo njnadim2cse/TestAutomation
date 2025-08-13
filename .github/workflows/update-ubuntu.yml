@@ -1,0 +1,24 @@
+name: Auto Update File on Ubuntu PC
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-remote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.TARGET_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 103.145.138.209 >> ~/.ssh/known_hosts
+
+      - name: Pull latest changes on Ubuntu machine
+        run: |
+          ssh nadim-hossain@103.145.138.209 "cd /home/nadim-hossain/Downloads/TestAutomation-main && git pull"
